@@ -26,7 +26,7 @@ st.set_page_config(
 )
 
 # ── Cloudflare Live Link ────────────────────────────────────────────────
-LIVE_URL = "https://could-booth-distributed-paintball.trycloudflare.com"
+LIVE_URL = "https://updates-pioneer-myspace-retrieve.trycloudflare.com"
 
 # ── High-Performance Modern CSS with Smooth Motions & Glassmorphism ───
 st.markdown("""
