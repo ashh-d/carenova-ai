@@ -2,7 +2,7 @@
 
 A voice-enabled, multilingual health information chatbot built with **Streamlit**, **Google Gemini**, **OpenAI Whisper**, and **Edge-TTS**.
 
-🌐 **Public Live Link:** [https://treasury-lit-truly-scott.trycloudflare.com](https://treasury-lit-truly-scott.trycloudflare.com)
+🌐 **Public Live Link:** (https://carenova-ai-brown.vercel.app/)
 
 > ⚠️ **This is CareNova AI, a health *information* assistant, not a doctor.** It cannot diagnose, prescribe, or replace professional medical advice.
 
@@ -62,7 +62,7 @@ ANTHROPIC_API_KEY=sk-ant-your-key-here
 streamlit run app.py
 ```
 
-The app opens at `http://localhost:8501`.
+The app opens at `https://carenova-ai-brown.vercel.app/`.
 
 ---
 
