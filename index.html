@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CareNova AI — Intelligent Health Companion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #090d16;
+      --card-bg: rgba(15, 23, 42, 0.75);
+      --card-border: rgba(56, 189, 248, 0.18);
+      --accent-cyan: #0ea5e9;
+      --accent-emerald: #10b981;
+      --accent-indigo: #6366f1;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --emergency-red: #ef4444;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(14, 165, 233, 0.15) 0%, transparent 60%),
+        radial-gradient(circle at 100% 100%, rgba(99, 102, 241, 0.08) 0%, transparent 50%);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* Animated Motion Keyframes */
+    @keyframes fadeInSlide {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes livePulse {
+      0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+      70% { box-shadow: 0 0 0 9px rgba(16, 185, 129, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    }
+
+    @keyframes floatIcon {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-4px); }
+    }
+
+    @keyframes emergencyGlow {
+      0%, 100% { border-color: rgba(239, 68, 68, 0.6); box-shadow: 0 0 20px rgba(239, 68, 68, 0.25); }
+      50% { border-color: rgba(239, 68, 68, 1); box-shadow: 0 0 32px rgba(239, 68, 68, 0.5); }
+    }
+
+    /* Container */
+    .app-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 24px 18px 120px 18px;
+      width: 100%;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top Bar */
+    .top-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 12px 20px;
+      margin-bottom: 24px;
+      animation: fadeInSlide 0.5s ease-out;
+    }
+
+    .brand-pill {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: -0.02em;
+    }
+
+    .live-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #34d399;
+    }
+
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10b981;
+      animation: livePulse 2s infinite;
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .lang-select {
+      background: rgba(30, 41, 59, 0.8);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      padding: 6px 12px;
+      border-radius: 10px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      outline: none;
+    }
+
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      padding: 16px 10px 24px 10px;
+      animation: fadeInSlide 0.6s ease-out;
+    }
+
+    .hero-icon {
+      font-size: 3rem;
+      display: inline-block;
+      animation: floatIcon 3.5s ease-in-out infinite;
+      margin-bottom: 8px;
+    }
+
+    .hero-title {
+      font-size: 2.4rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 6px;
+    }
+
+    .hero-subtitle {
+      color: var(--text-muted);
+      font-size: 1.02rem;
+      margin-bottom: 18px;
+    }
+
+    .feature-tags {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .tag {
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 999px;
+      background: rgba(14, 165, 233, 0.1);
+      border: 1px solid rgba(14, 165, 233, 0.25);
+      color: #7dd3fc;
+    }
+
+    /* Disclaimer */
+    .disclaimer {
+      background: rgba(245, 158, 11, 0.09);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      border-radius: 14px;
+      padding: 12px 18px;
+      font-size: 0.84rem;
+      color: #fde68a;
+      line-height: 1.5;
+      margin-bottom: 24px;
+      animation: fadeInSlide 0.7s ease-out;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    /* Quick Prompt Chips */
+    .chips-section {
+      margin-bottom: 22px;
+      animation: fadeInSlide 0.8s ease-out;
+    }
+
+    .chips-title {
+      font-size: 0.86rem;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .chips-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 10px;
+    }
+
+    .chip-btn {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 12px 16px;
+      color: #e2e8f0;
+      font-size: 0.88rem;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .chip-btn:hover {
+      background: rgba(30, 41, 59, 0.95);
+      border-color: #38bdf8;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(14, 165, 233, 0.15);
+    }
+
+    /* Chat Messages */
+    .chat-container {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .message-row {
+      display: flex;
+      gap: 12px;
+      animation: fadeInSlide 0.35s ease-out;
+    }
+
+    .message-row.user {
+      justify-content: flex-end;
+    }
+
+    .avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      flex-shrink: 0;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid var(--card-border);
+    }
+
+    .message-bubble {
+      max-width: 82%;
+      padding: 14px 18px;
+      border-radius: 18px;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      word-break: break-word;
+    }
+
+    .message-row.user .message-bubble {
+      background: linear-gradient(135deg, #0284c7 0%, #4f46e5 100%);
+      color: #ffffff;
+      border-bottom-right-radius: 4px;
+      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.25);
+    }
+
+    .message-row.assistant .message-bubble {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid var(--card-border);
+      color: #f1f5f9;
+      border-bottom-left-radius: 4px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Emergency Alert Box */
+    .emergency-card {
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.16) 0%, rgba(185, 28, 28, 0.1) 100%);
+      border: 2px solid var(--emergency-red);
+      border-radius: 16px;
+      padding: 18px 22px;
+      margin-top: 12px;
+      animation: emergencyGlow 2.5s infinite;
+    }
+
+    .emergency-header {
+      color: #f87171;
+      font-size: 1.15rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .emergency-buttons {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+
+    .btn-emergency {
+      background: #dc2626;
+      color: white;
+      text-decoration: none;
+      padding: 8px 16px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .btn-emergency:hover {
+      background: #b91c1c;
+      transform: translateY(-1px);
+    }
+
+    .btn-facility {
+      background: #059669;
+      color: white;
+      text-decoration: none;
+      padding: 8px 16px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .btn-facility:hover {
+      background: #047857;
+      transform: translateY(-1px);
+    }
+
+    /* Fixed Input Dock */
+    .input-dock {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(9, 13, 22, 0.88);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-top: 1px solid var(--card-border);
+      padding: 16px 20px;
+      z-index: 50;
+    }
+
+    .input-dock-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .input-box {
+      flex: 1;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 14px 18px;
+      color: var(--text-main);
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .input-box:focus {
+      border-color: #38bdf8;
+      box-shadow: 0 0 16px rgba(14, 165, 233, 0.2);
+    }
+
+    .btn-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: rgba(30, 41, 59, 0.9);
+      border: 1px solid var(--card-border);
+      color: #38bdf8;
+      font-size: 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+
+    .btn-icon:hover {
+      background: #0ea5e9;
+      color: white;
+      transform: translateY(-1px);
+    }
+
+    .btn-icon.recording {
+      background: #ef4444 !important;
+      color: white !important;
+      animation: emergencyGlow 1.5s infinite;
+    }
+
+    .btn-send {
+      background: linear-gradient(135deg, #0ea5e9 0%, #6366f1 100%);
+      color: white;
+      border: none;
+    }
+
+    .btn-send:hover {
+      box-shadow: 0 4px 14px rgba(14, 165, 233, 0.35);
+    }
+
+    /* Typing Loader */
+    .typing-loader {
+      display: inline-flex;
+      gap: 5px;
+      padding: 6px 12px;
+    }
+
+    .typing-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #38bdf8;
+      animation: livePulse 1.2s infinite;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <!-- Top Bar -->
+    <header class="top-nav">
+      <div class="brand-pill">
+        <span>🩺</span>
+        <span>CareNova AI</span>
+        <div class="live-status">
+          <span class="live-dot"></span>
+          <span>Online & Ready</span>
+        </div>
+      </div>
+      <div class="nav-actions">
+        <select id="langSelect" class="lang-select">
+          <option value="en">🇬🇧 English</option>
+          <option value="hi">🇮🇳 हिंदी (Hindi)</option>
+          <option value="mr">🚩 मराठी (Marathi)</option>
+        </select>
+        <button id="ttsToggle" class="btn-icon" title="Toggle Spoken Voice" style="width: 36px; height: 36px; font-size: 0.95rem;">🔊</button>
+        <button id="resetBtn" class="btn-icon" title="Reset Chat" style="width: 36px; height: 36px; font-size: 0.95rem;">🗑️</button>
+      </div>
+    </header>
+
+    <!-- Hero Header -->
+    <section class="hero" id="heroSection">
+      <div class="hero-icon">🩺</div>
+      <h1 class="hero-title">CareNova AI</h1>
+      <p class="hero-subtitle">Intelligent Multilingual Clinical Guidance & Health Companion</p>
+      <div class="feature-tags">
+        <span class="tag">⚡ Gemini 3.5 Intelligence</span>
+        <span class="tag">🎙️ Multilingual Voice Engine</span>
+        <span class="tag">🛡️ Real-Time Safety Guardrails</span>
+        <span class="tag">🔒 Client-Side Privacy</span>
+      </div>
+    </section>
+
+    <!-- Medical Disclaimer -->
+    <div class="disclaimer">
+      <span style="font-size: 1.25rem;">⚠️</span>
+      <div>
+        <strong>Medical Disclaimer:</strong> CareNova AI is an educational health information assistant, <strong>not a medical doctor</strong>. It cannot diagnose illnesses or prescribe medication. In acute emergencies, immediately dial <strong>112</strong> (India) or consult a licensed physician.
+      </div>
+    </div>
+
+    <!-- Quick Suggestion Chips -->
+    <div class="chips-section" id="chipsSection">
+      <div class="chips-title">💡 Suggested Health Inquiries</div>
+      <div class="chips-grid">
+        <button class="chip-btn" data-query="I have had a throbbing headache for 2 days with light sensitivity. What could this mean?">
+          <span>🤕</span> Throbbing headache for 2 days
+        </button>
+        <button class="chip-btn" data-query="What is the safe paracetamol dosage for an 18-month-old infant?">
+          <span>👶</span> Child paracetamol safety guidance
+        </button>
+        <button class="chip-btn" data-query="I have had a high fever and chills since last night. What steps should I monitor?">
+          <span>🤒</span> High fever & chills advice
+        </button>
+        <button class="chip-btn" data-query="I feel sudden tightness in my chest and difficulty breathing.">
+          <span>🚨</span> Sudden chest tightness check
+        </button>
+      </div>
+    </div>
+
+    <!-- Chat Message Container -->
+    <main class="chat-container" id="chatContainer"></main>
+  </div>
+
+  <!-- Bottom Input Dock -->
+  <footer class="input-dock">
+    <div class="input-dock-inner">
+      <button id="micBtn" class="btn-icon" title="Voice Consultation">🎤</button>
+      <input type="text" id="userInput" class="input-box" placeholder="Ask CareNova AI about symptoms, wellness, or health topics..." autocomplete="off">
+      <button id="sendBtn" class="btn-icon btn-send" title="Send Message">➤</button>
+    </div>
+  </footer>
+
+  <script>
+    const chatContainer = document.getElementById('chatContainer');
+    const userInput = document.getElementById('userInput');
+    const sendBtn = document.getElementById('sendBtn');
+    const micBtn = document.getElementById('micBtn');
+    const langSelect = document.getElementById('langSelect');
+    const ttsToggle = document.getElementById('ttsToggle');
+    const resetBtn = document.getElementById('resetBtn');
+    const heroSection = document.getElementById('heroSection');
+    const chipsSection = document.getElementById('chipsSection');
+
+    let history = [];
+    let isVoiceActive = false;
+    let ttsEnabled = true;
+
+    // Toggle Voice Output
+    ttsToggle.addEventListener('click', () => {
+      ttsEnabled = !ttsEnabled;
+      ttsToggle.textContent = ttsEnabled ? '🔊' : '🔇';
+      ttsToggle.style.color = ttsEnabled ? '#38bdf8' : '#94a3b8';
+    });
+
+    // Reset Chat
+    resetBtn.addEventListener('click', () => {
+      history = [];
+      chatContainer.innerHTML = '';
+      heroSection.style.display = 'block';
+      chipsSection.style.display = 'block';
+      userInput.value = '';
+    });
+
+    // Clickable Suggestion Chips
+    document.querySelectorAll('.chip-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const query = btn.getAttribute('data-query');
+        userInput.value = query;
+        handleSendMessage();
+      });
+    });
+
+    // Send Message Trigger
+    sendBtn.addEventListener('click', handleSendMessage);
+    userInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') handleSendMessage();
+    });
+
+    async function handleSendMessage() {
+      const text = userInput.value.trim();
+      if (!text) return;
+
+      userInput.value = '';
+      heroSection.style.display = 'none';
+      chipsSection.style.display = 'none';
+
+      appendMessage('user', text);
+      const loadingId = appendLoading();
+
+      try {
+        const response = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            message: text,
+            history: history,
+            language: langSelect.value
+          })
+        });
+
+        const data = await response.json();
+        removeLoading(loadingId);
+
+        if (data.error) {
+          appendMessage('assistant', `⚠️ System Error: ${data.error}`);
+          return;
+        }
+
+        appendMessage('assistant', data.response, data.is_emergency, data.emergency_label);
+        history.push({ role: 'user', content: text });
+        history.push({ role: 'assistant', content: data.response });
+
+        // Spoken Output
+        if (ttsEnabled && 'speechSynthesis' in window) {
+          speakText(data.response, langSelect.value);
+        }
+
+      } catch (err) {
+        removeLoading(loadingId);
+        appendMessage('assistant', `⚠️ Network error: Could not reach server. Please check your connection.`);
+      }
+    }
+
+    function appendMessage(role, content, isEmergency = false, emergencyLabel = '') {
+      const row = document.createElement('div');
+      row.className = `message-row ${role}`;
+
+      const avatar = document.createElement('div');
+      avatar.className = 'avatar';
+      avatar.textContent = role === 'user' ? '🧑' : '🩺';
+
+      const bubble = document.createElement('div');
+      bubble.className = 'message-bubble';
+      bubble.innerHTML = formatMarkdown(content);
+
+      if (isEmergency) {
+        const alertBox = document.createElement('div');
+        alertBox.className = 'emergency-card';
+        alertBox.innerHTML = `
+          <div class="emergency-header">
+            <span>🚨 CRITICAL MEDICAL TRIAGE ALERT</span>
+          </div>
+          <div style="font-size: 0.9rem; color: #fecaca; line-height: 1.5;">
+            Emergency signals identified (${emergencyLabel || 'Acute Medical Emergency'}). Immediate clinical assistance is advised.
+          </div>
+          <div class="emergency-buttons">
+            <a href="tel:112" class="btn-emergency">📞 Call 112 (Emergency)</a>
+            <a href="https://www.google.com/maps/search/hospital+near+me" target="_blank" class="btn-facility">🏥 Find Nearest Hospital ↗</a>
+          </div>
+        `;
+        bubble.appendChild(alertBox);
+      }
+
+      if (role === 'user') {
+        row.appendChild(bubble);
+        row.appendChild(avatar);
+      } else {
+        row.appendChild(avatar);
+        row.appendChild(bubble);
+      }
+
+      chatContainer.appendChild(row);
+      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }
+
+    function appendLoading() {
+      const id = 'loader-' + Date.now();
+      const row = document.createElement('div');
+      row.className = 'message-row assistant';
+      row.id = id;
+
+      const avatar = document.createElement('div');
+      avatar.className = 'avatar';
+      avatar.textContent = '🩺';
+
+      const bubble = document.createElement('div');
+      bubble.className = 'message-bubble typing-loader';
+      bubble.innerHTML = '<span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>';
+
+      row.appendChild(avatar);
+      row.appendChild(bubble);
+      chatContainer.appendChild(row);
+      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+      return id;
+    }
+
+    function removeLoading(id) {
+      const el = document.getElementById(id);
+      if (el) el.remove();
+    }
+
+    function formatMarkdown(text) {
+      return text
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.*?)\*/g, '<em>$1</em>')
+        .replace(/\n\n/g, '<br><br>')
+        .replace(/\n/g, '<br>');
+    }
+
+    // Web Speech API Voice Recognition
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (SpeechRecognition) {
+      const recognizer = new SpeechRecognition();
+      recognizer.continuous = false;
+      recognizer.interimResults = false;
+
+      micBtn.addEventListener('click', () => {
+        if (!isVoiceActive) {
+          const lang = langSelect.value;
+          recognizer.lang = lang === 'hi' ? 'hi-IN' : (lang === 'mr' ? 'mr-IN' : 'en-IN');
+          recognizer.start();
+          isVoiceActive = true;
+          micBtn.classList.add('recording');
+          micBtn.textContent = '⏹️';
+        } else {
+          recognizer.stop();
+          isVoiceActive = false;
+          micBtn.classList.remove('recording');
+          micBtn.textContent = '🎤';
+        }
+      });
+
+      recognizer.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        userInput.value = transcript;
+        isVoiceActive = false;
+        micBtn.classList.remove('recording');
+        micBtn.textContent = '🎤';
+        handleSendMessage();
+      };
+
+      recognizer.onerror = () => {
+        isVoiceActive = false;
+        micBtn.classList.remove('recording');
+        micBtn.textContent = '🎤';
+      };
+    } else {
+      micBtn.style.opacity = '0.5';
+      micBtn.title = 'Voice recognition not supported in this browser';
+    }
+
+    function speakText(text, lang) {
+      window.speechSynthesis.cancel();
+      const clean = text.replace(/[*#_🚨⚠️]/g, '').trim();
+      const utterance = new SpeechSynthesisUtterance(clean);
+      utterance.lang = lang === 'hi' ? 'hi-IN' : (lang === 'mr' ? 'mr-IN' : 'en-IN');
+      utterance.rate = 1.0;
+      window.speechSynthesis.speak(utterance);
+    }
+  </script>
+</body>
+</html>
